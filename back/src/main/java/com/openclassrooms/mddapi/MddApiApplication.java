@@ -10,4 +10,5 @@ public class MddApiApplication {
 		SpringApplication.run(MddApiApplication.class, args);
 	}
 
+
 }
