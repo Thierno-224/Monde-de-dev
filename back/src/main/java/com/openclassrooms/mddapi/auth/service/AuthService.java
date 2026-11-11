@@ -2,6 +2,7 @@ package com.openclassrooms.mddapi.auth.service;
 
 import com.openclassrooms.mddapi.auth.dto.AuthResponse;
 import com.openclassrooms.mddapi.auth.dto.LoginRequest;
+import com.openclassrooms.mddapi.common.exception.ResourceNotFoundException;
 import com.openclassrooms.mddapi.security.jwt.JwtService;
 import com.openclassrooms.mddapi.user.dto.UserResponse;
 import com.openclassrooms.mddapi.user.entity.User;
@@ -56,14 +57,12 @@ public class AuthService {
             );
         }
 
-        String email = authentication.getName();
+        Long userId = Long.valueOf(authentication.getName());
 
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() ->
-                        new AuthenticationCredentialsNotFoundException(
-                                "Utilisateur non authentifié"
-                        )
-                );
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Utilisateur introuvable"
+                ));
 
         return new UserResponse(
                 user.getId(),

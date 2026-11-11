@@ -65,4 +65,12 @@ public class GlobalExceptionHandler {
                         "message", "Identifiants incorrects"
                 ));
     }
+
+    @ExceptionHandler(ResourceConflictException.class)
+    public ResponseEntity<Map<String, String>> handleConflict(
+            ResourceConflictException exception
+    ) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of("message", exception.getMessage()));
+    }
 }
