@@ -10,8 +10,11 @@ import com.openclassrooms.mddapi.theme.repository.ThemeRepository;
 import com.openclassrooms.mddapi.user.entity.User;
 import com.openclassrooms.mddapi.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -33,6 +36,23 @@ public class ArticleService {
         article.setAuthor(author);
         article.setTheme(theme);
         articleRepository.save(article);
+        return mapToArticleResponse(article);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ArticleResponse> getAllArticles() {
+        List<Article> articles = articleRepository.findAll(
+                Sort.by(Sort.Direction.DESC, "createdAt")
+        );
+        return articles.stream()
+                .map(this::mapToArticleResponse)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public ArticleResponse getArticleById(Long articleId) {
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new ResourceNotFoundException("Article not found"));
         return mapToArticleResponse(article);
     }
 
