@@ -1,0 +1,47 @@
+:host {
+  display: block;
+}
+
+.welcome {
+  width: 100%;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  gap: 30px;
+}
+
+.welcome__content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 80px;
+}
+
+.welcome__logo {
+  display: block;
+  width: min(100%, 320px);
+  height: auto;
+}
+
+.welcome__actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+}
+
+@media (max-width: 600px) {
+  .welcome__content {
+    gap: 64px;
+  }
+
+  .welcome__logo {
+    width: min(100%, 225px);
+  }
+
+  .welcome__actions {
+    flex-direction: column;
+    gap: 32px;
+  }
+}
