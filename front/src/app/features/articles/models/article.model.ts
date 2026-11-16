@@ -6,3 +6,9 @@ export interface ArticleModel {
   theme: string;
   createdAt: Date
 }
+
+export interface CreateArticleModel {
+  title: string;
+  content: string;
+  themeId: number;
+}

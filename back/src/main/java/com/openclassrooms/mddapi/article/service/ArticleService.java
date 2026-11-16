@@ -5,6 +5,8 @@ import com.openclassrooms.mddapi.article.dto.CreateArticleRequest;
 import com.openclassrooms.mddapi.article.entity.Article;
 import com.openclassrooms.mddapi.article.repository.ArticleRepository;
 import com.openclassrooms.mddapi.common.exception.ResourceNotFoundException;
+import com.openclassrooms.mddapi.subscription.entity.Subscription;
+import com.openclassrooms.mddapi.subscription.repository.SubscriptionRepository;
 import com.openclassrooms.mddapi.theme.entity.Theme;
 import com.openclassrooms.mddapi.theme.repository.ThemeRepository;
 import com.openclassrooms.mddapi.user.entity.User;
@@ -22,6 +24,7 @@ public class ArticleService {
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
     private final ThemeRepository themeRepository;
+    private final SubscriptionRepository subscriptionRepository;
 
     @Transactional
     public ArticleResponse createArticle(CreateArticleRequest request, Long userId) {
@@ -45,6 +48,25 @@ public class ArticleService {
                 Sort.by(Sort.Direction.DESC, "createdAt")
         );
         return articles.stream()
+                .map(this::mapToArticleResponse)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<ArticleResponse> getArticlesBySubscription(Long userId, Sort.Direction direction) {
+        List<Long> themeIds = subscriptionRepository
+                .findByUserId(userId)
+                .stream()
+                .map(subscription -> subscription.getTheme().getId())
+                .toList();
+
+        if (themeIds.isEmpty())
+            return List.of();
+
+        Sort sort = Sort.by(direction, "createdAt");
+        return articleRepository
+                .findByThemeIdIn(themeIds, sort)
+                .stream()
                 .map(this::mapToArticleResponse)
                 .toList();
     }

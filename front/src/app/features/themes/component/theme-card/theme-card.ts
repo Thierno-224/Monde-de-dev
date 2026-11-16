@@ -1,4 +1,4 @@
-import {Component, input, InputSignal} from '@angular/core';
+import {Component, Input, input, InputSignal} from '@angular/core';
 import {ThemeModel} from '../../models/theme.model';
 
 @Component({
@@ -9,4 +9,6 @@ import {ThemeModel} from '../../models/theme.model';
 })
 export class ThemeCard {
   theme: InputSignal<ThemeModel> = input.required<ThemeModel>()
+
+  mode = input<'list' | 'profile'>('list');
 }

@@ -19,6 +19,12 @@ export const routes: Routes = [{
       import('./features/articles/pages/article-list/article-list').then(m => m.ArticleList)
   },
   {
+    path: 'articles/create',
+    title: 'Créer un article | MDD',
+    loadComponent: () =>
+      import('./features/articles/pages/article-create/article-create').then(m => m.ArticleCreate)
+  },
+  {
     path: 'articles/:id',
     loadComponent: () =>
       import('./features/articles/pages/article-detail/article-detail').then(m => m.ArticleDetail)
@@ -28,6 +34,12 @@ export const routes: Routes = [{
     title: 'Themes | MDD',
     loadComponent: () =>
       import('./features/themes/pages/theme-list/theme-list').then(m => m.ThemeList)
+  },
+  {
+    path: 'profile',
+    title: 'Profil | MDD',
+    loadComponent:() => import('./features/profile/pages/profile/profile')
+      .then(m => m.Profile)
   },
   {
     path: '',

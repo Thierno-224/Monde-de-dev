@@ -1,0 +1,64 @@
+<app-header/>
+
+<main class="profile">
+
+  <section class="profile__account">
+    <h1>Profil utilisateur</h1>
+
+    <form
+      [formGroup]="userForm"
+      (ngSubmit)="saveProfile()"
+      class="profile__form">
+
+      <div class="form-field">
+        <input
+          type="text"
+          class="form-control form-control--purple"
+          formControlName="username"
+          placeholder="Username"
+          aria-label="Nom d'utilisateur"
+        />
+      </div>
+
+      <div class="form-field">
+        <input
+          type="email"
+          class="form-control form-control--purple"
+          formControlName="email"
+          placeholder="Email"
+          aria-label="Adresse email"
+        />
+      </div>
+
+      <div class="form-field">
+        <input
+          type="password"
+          class="form-control form-control--purple"
+          formControlName="password"
+          placeholder="Mot de passe"
+          aria-label="Nouveau mot de passe"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn--primary">
+        Sauvegarder
+      </button>
+
+    </form>
+  </section>
+
+  <section class="profile__subscriptions">
+    <h2>Abonnements</h2>
+
+    <div class="profile__subscription-list">
+      @for (theme of subscribedThemes$ | async; track theme.id) {
+        <app-theme-card [theme]="theme" mode="profile"/>
+      } @empty {
+        <p>Vous n'êtes abonné à aucun thème.</p>
+      }
+    </div>
+  </section>
+
+</main>

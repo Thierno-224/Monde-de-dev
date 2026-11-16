@@ -3,7 +3,7 @@ import {Header} from '../../../../shared/components/header/header';
 import {Observable} from 'rxjs';
 import {ThemeModel} from '../../models/theme.model';
 import {ThemeService} from '../../services/theme.service';
-import {AsyncPipe, JsonPipe} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {ThemeCard} from '../../component/theme-card/theme-card';
 
 @Component({
@@ -11,7 +11,6 @@ import {ThemeCard} from '../../component/theme-card/theme-card';
   imports: [
     Header,
     AsyncPipe,
-    JsonPipe,
     ThemeCard
   ],
   templateUrl: './theme-list.html',

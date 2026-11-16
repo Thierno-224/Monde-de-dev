@@ -1,0 +1,65 @@
+.article-create {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px 50px;
+}
+
+.back-link {
+  position: absolute;
+  top: 28px;
+  left: 20px;
+  font-size: 42px;
+  line-height: 1;
+  color: #000;
+}
+
+.create-content {
+  max-width: 320px;
+  margin: 0 auto;
+
+  h1 {
+    margin: 0 0 45px;
+    font-size: 26px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .article-textarea {
+    height: 240px;
+    padding: 12px;
+    resize: vertical;
+  }
+
+  .btn {
+    align-self: center;
+    margin-top: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .article-create {
+    padding: 85px 20px 30px;
+  }
+
+  .back-link {
+    top: 20px;
+    left: 15px;
+  }
+
+  .create-content {
+    max-width: 100%;
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 30px;
+      white-space: normal;
+    }
+  }
+}

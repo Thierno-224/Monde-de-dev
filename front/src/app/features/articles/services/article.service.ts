@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {ArticleModel} from '../models/article.model';
+import {ArticleModel, CreateArticleModel} from '../models/article.model';
 import {environment} from '../../../../environments/environment';
 
 @Injectable({
@@ -20,6 +20,13 @@ export class ArticleService {
   getArticleById(id: number): Observable<ArticleModel> {
     return this.http.get<ArticleModel>(
       `${environment.apiBaseUrl}/articles/${id}`
+    )
+  }
+
+  createArticle(request: CreateArticleModel): Observable<ArticleModel> {
+    return this.http.post<ArticleModel>(
+      `${environment.apiBaseUrl}/articles`,
+      request
     )
   }
 }

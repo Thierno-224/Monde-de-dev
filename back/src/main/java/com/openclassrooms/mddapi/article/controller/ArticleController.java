@@ -5,6 +5,7 @@ import com.openclassrooms.mddapi.article.dto.CreateArticleRequest;
 import com.openclassrooms.mddapi.article.service.ArticleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -38,5 +39,15 @@ public class ArticleController {
     @GetMapping("/{id}")
     public ResponseEntity<ArticleResponse> getArticleById(@PathVariable Long id) {
         return ResponseEntity.ok(articleService.getArticleById(id));
+    }
+
+    @GetMapping("/feed")
+    public ResponseEntity<List<ArticleResponse>> getFeed(
+            @RequestParam(defaultValue = "DESC") Sort.Direction sort,
+            Authentication authentication
+    ) {
+        Long userId = Long.valueOf(authentication.getName());
+
+        return ResponseEntity.ok(articleService.getArticlesBySubscription(userId, sort));
     }
 }

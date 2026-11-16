@@ -1,6 +1,6 @@
-import {Component, inject, input, signal} from '@angular/core';
+import {Component, DestroyRef, inject, input, signal} from '@angular/core';
 import {ArticleService} from '../../services/article.service';
-import {toObservable} from '@angular/core/rxjs-interop';
+import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 import {combineLatest, switchMap} from 'rxjs';
 import {AsyncPipe, DatePipe} from '@angular/common';
 import {RouterLink} from '@angular/router';
@@ -26,6 +26,7 @@ import {FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angula
 export class ArticleDetail {
     private articleService = inject(ArticleService);
     private commentService = inject(CommentService);
+  private destroyRef = inject(DestroyRef);
 
     id = input.required<string>();
     refreshComments = signal(0);
@@ -55,6 +56,7 @@ export class ArticleDetail {
     if (!content) return;
 
     this.commentService.addComment(Number(this.id()), content)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.commentControl.reset();
         this.refreshComments.update(value => value + 1);

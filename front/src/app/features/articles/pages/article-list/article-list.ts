@@ -1,9 +1,8 @@
 import {Component, inject, signal} from '@angular/core';
 import {Header} from '../../../../shared/components/header/header';
 import {ArticleService} from '../../services/article.service';
-import {Observable, switchMap} from 'rxjs';
-import {ArticleModel} from '../../models/article.model';
-import {AsyncPipe, JsonPipe} from '@angular/common';
+import {switchMap} from 'rxjs';
+import {AsyncPipe} from '@angular/common';
 import {ArticleCard} from '../../components/article-card/article-card';
 import {RouterLink} from '@angular/router';
 import {toObservable} from '@angular/core/rxjs-interop';
@@ -13,7 +12,6 @@ import {toObservable} from '@angular/core/rxjs-interop';
   imports: [
     Header,
     AsyncPipe,
-    JsonPipe,
     ArticleCard,
     RouterLink
   ],

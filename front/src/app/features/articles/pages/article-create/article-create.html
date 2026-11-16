@@ -1,0 +1,49 @@
+<app-header/>
+
+<main class="article-create">
+  <a routerLink="/articles" class="back-link" aria-label="Retour aux articles">
+    ←
+  </a>
+
+  <section class="create-content">
+    <h1>Créer un nouvel article</h1>
+
+    <form [formGroup]="articleForm" (ngSubmit)="submitArticle()">
+
+      <div class="form-field">
+        <select class="form-control form-control--purple" formControlName="themeId">
+          <option [ngValue]="0" disabled>Sélectionner un thème</option>
+          @for (theme of themes$ | async; track theme.id) {
+            <option [ngValue]="theme.id">{{ theme.title }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-field">
+        <input
+          class="form-control form-control--purple"
+          type="text"
+          formControlName="title"
+          placeholder="Titre de l'article"
+        />
+      </div>
+
+      <div class="form-field">
+        <textarea
+          class="form-control form-control--purple article-textarea"
+          formControlName="content"
+          placeholder="Contenu de l'article"
+        ></textarea>
+      </div>
+      <button
+        type="submit"
+        class="btn"
+        [class.btn--primary]="articleForm.valid"
+        [class.btn--disabled]="articleForm.invalid"
+        [disabled]="articleForm.invalid">
+        Créer
+      </button>
+
+    </form>
+  </section>
+</main>

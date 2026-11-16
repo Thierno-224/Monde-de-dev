@@ -6,13 +6,18 @@
   </p>
 
   <div class="theme-actions">
-    @if (theme().subscribed) {
-      <button type="button" class="btn btn--disabled" disabled>
-        Déjà abonné
+    @if (mode() === 'profile') {
+      <button type="button" class="btn btn--primary">
+        Se désabonner
       </button>
     } @else {
-      <button type="button" class="btn btn--primary">
-        S’abonner
+      <button
+        type="button"
+        class="btn"
+        [class.btn--primary]="!theme().subscribed"
+        [class.btn--disabled]="theme().subscribed"
+        [disabled]="theme().subscribed">
+        {{ theme().subscribed ? 'Déjà abonné' : "S'abonner" }}
       </button>
     }
   </div>

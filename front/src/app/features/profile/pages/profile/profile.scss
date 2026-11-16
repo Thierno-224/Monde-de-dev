@@ -1,0 +1,82 @@
+.profile {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 35px 24px 20px;
+}
+
+.profile__account {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h1 {
+    margin: 0 0 14px;
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+  }
+}
+
+.profile__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 320px;
+  gap: 14px;
+
+  .btn {
+    width: 158px;
+    margin-top: 12px;
+  }
+}
+
+.profile__control {
+  height: 54px;
+  border: 2px solid #7763c5;
+}
+
+.profile__subscriptions {
+  margin-top: 26px;
+  padding-top: 16px;
+  border-top: 1px solid #555;
+
+  h2 {
+    margin: 0 0 14px;
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+  }
+}
+
+.profile__subscription-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  .profile {
+    padding: 24px 15px;
+  }
+
+  .profile__account h1 {
+    margin-bottom: 14px;
+    font-size: 26px;
+  }
+
+  .profile__form {
+    max-width: 100%;
+    gap: 14px;
+  }
+
+  .profile__subscriptions {
+    margin-top: 24px;
+    padding-top: 12px;
+  }
+
+  .profile__subscription-list {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
