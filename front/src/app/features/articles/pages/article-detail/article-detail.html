@@ -1,0 +1,71 @@
+<app-header/>
+
+<main class="article-detail">
+
+  <a routerLink="/articles" class="back-link" aria-label="Retour aux articles">
+    <span aria-hidden="true">←</span>
+  </a>
+
+  @if (article$ | async; as article) {
+    <section class="article-body">
+
+      <h1>{{ article.title }}</h1>
+
+      <div class="article-meta">
+        <span>{{ article.createdAt | date:'d MMMM' }}</span>
+        <span>{{ article.author }}</span>
+        <span>{{ article.theme }}</span>
+      </div>
+
+      <p class="article-content">{{ article.content }}</p>
+
+      <hr>
+
+    </section>
+  } @else {
+    <p>Chargement de l'article...</p>
+  }
+
+  <section class="comments-section">
+    <h2>Commentaires</h2>
+
+    @if (comments$ | async; as comments) {
+      @for (comment of comments; track comment.id) {
+        <app-comment-card [comment]="comment"/>
+      } @empty {
+        <p>Aucun commentaire pour cet article.</p>
+      }
+    } @else {
+      <p>Chargement des commentaires...</p>
+    }
+    <form class="comment-form" (ngSubmit)="submitComment()">
+  <textarea
+    [formControl]="commentControl"
+    placeholder="Écrivez ici votre commentaire"
+    rows="4">
+  </textarea>
+
+      <button
+        type="submit"
+        class="send-button"
+        [disabled]="commentControl.invalid"
+        aria-label="Envoyer le commentaire">
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="m22 2-7 20-4-9-9-4Z"/>
+          <path d="M22 2 11 13"/>
+        </svg>
+      </button>
+    </form>
+  </section>
+
+</main>

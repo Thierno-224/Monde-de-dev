@@ -1,1 +1,25 @@
-<p>article-list works!</p>
+<app-header/>
+
+<main class="articles-page">
+  <div class="articles-actions">
+    <a routerLink="/articles/create" class="btn btn--primary">
+      Créer un article
+    </a>
+
+    <button type="button" class="sort-button" (click)="toggleSort()">
+      Trier par {{ sort() === 'DESC' ? '↓' : '↑' }}
+    </button>
+  </div>
+
+  @if (articles$ | async; as articles) {
+    <section class="articles-grid">
+      @for (article of articles; track article.id) {
+        <app-article-card [article]="article"/>
+      } @empty {
+        <p>Aucun article disponible.</p>
+      }
+    </section>
+  } @else {
+    <p>Chargement des articles...</p>
+  }
+</main>

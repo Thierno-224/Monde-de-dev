@@ -1,0 +1,13 @@
+<app-header/>
+
+<main class="themes-page">
+  @if (themes$ | async; as themes) {
+    <section class="themes-grid">
+      @for (theme of themes; track theme.id) {
+        <app-theme-card [theme]="theme"/>
+      } @empty {
+        <p>Aucun thème disponible.</p>
+      }
+    </section>
+  }
+</main>

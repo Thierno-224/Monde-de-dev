@@ -1,0 +1,19 @@
+<article class="theme-card">
+  <h2>{{ theme().title }}</h2>
+
+  <p class="theme-description">
+    {{ theme().description }}
+  </p>
+
+  <div class="theme-actions">
+    @if (theme().subscribed) {
+      <button type="button" class="btn btn--disabled" disabled>
+        Déjà abonné
+      </button>
+    } @else {
+      <button type="button" class="btn btn--primary">
+        S’abonner
+      </button>
+    }
+  </div>
+</article>

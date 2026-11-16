@@ -1,0 +1,30 @@
+.comment-card {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.comment-author {
+  text-align: right;
+}
+
+.comment-content {
+  margin: 0;
+  padding: 20px;
+  background: #eeeeee;
+  border-radius: 16px;
+  min-height: 70px;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 768px) {
+  .comment-card {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .comment-author {
+    text-align: right;
+  }
+}

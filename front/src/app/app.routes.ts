@@ -13,6 +13,23 @@ export const routes: Routes = [{
       import('./features/auth/pages/register/register').then(m => m.Register)
   },
   {
+    path: 'articles',
+    title: 'Articles | MDD',
+    loadComponent: () =>
+      import('./features/articles/pages/article-list/article-list').then(m => m.ArticleList)
+  },
+  {
+    path: 'articles/:id',
+    loadComponent: () =>
+      import('./features/articles/pages/article-detail/article-detail').then(m => m.ArticleDetail)
+  },
+  {
+    path: 'themes',
+    title: 'Themes | MDD',
+    loadComponent: () =>
+      import('./features/themes/pages/theme-list/theme-list').then(m => m.ThemeList)
+  },
+  {
     path: '',
     title: 'Accueil | MDD',
     loadComponent: () =>
