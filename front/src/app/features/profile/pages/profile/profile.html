@@ -54,7 +54,7 @@
 
     <div class="profile__subscription-list">
       @for (theme of subscribedThemes$ | async; track theme.id) {
-        <app-theme-card [theme]="theme" mode="profile"/>
+        <app-theme-card [theme]="theme" mode="profile" (themeClicked)="onUnsubscribe($event)"/>
       } @empty {
         <p>Vous n'êtes abonné à aucun thème.</p>
       }

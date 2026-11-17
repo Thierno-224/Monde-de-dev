@@ -16,4 +16,23 @@ export class ThemeService {
       `${environment.apiBaseUrl}/themes`
     )
   }
+
+  getSubscribedThemes(): Observable<ThemeModel[]> {
+    return this.http.get<ThemeModel[]>(
+      `${environment.apiBaseUrl}/users/me/subscriptions`
+    );
+  }
+
+  subscribe(themeId: number): Observable<void> {
+    return this.http.post<void>(
+      `${environment.apiBaseUrl}/themes/${themeId}/subscriptions`,
+      null
+    )
+  }
+
+  unSubscribe(themeId: number): Observable<void> {
+    return this.http.delete<void>(
+      `${environment.apiBaseUrl}/themes/${themeId}/subscriptions`
+    )
+  }
 }

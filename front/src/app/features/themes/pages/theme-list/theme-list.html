@@ -4,7 +4,7 @@
   @if (themes$ | async; as themes) {
     <section class="themes-grid">
       @for (theme of themes; track theme.id) {
-        <app-theme-card [theme]="theme"/>
+        <app-theme-card [theme]="theme" (themeClicked)="onSubscribe($event)"/>
       } @empty {
         <p>Aucun thème disponible.</p>
       }

@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, input, InputSignal} from '@angular/core';
+import {ChangeDetectorRef, Component, DestroyRef, inject, input, InputSignal} from '@angular/core';
 import {Header} from '../../../../shared/components/header/header';
 import {UserService} from '../../services/user-service';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -26,12 +26,10 @@ export class Profile {
   private fb = inject(FormBuilder);
   private destroyRef = inject(DestroyRef);
   private themeService = inject(ThemeService);
+  private cdr = inject(ChangeDetectorRef);
 
   theme: InputSignal<ThemeModel> = input.required<ThemeModel>();
-  subscribedThemes$: Observable<ThemeModel[]> = this.themeService.getAllThem()
-    .pipe(
-      map(themes => themes.filter(sub => sub.subscribed)),
-    )
+  subscribedThemes$: Observable<ThemeModel[]> = this.themeService.getSubscribedThemes()
 
   userForm = this.fb.nonNullable.group({
     username: ['', Validators.required],
@@ -71,6 +69,17 @@ export class Profile {
             username: user.username,
             email: user.email
           })
+        }
+      })
+  }
+
+  protected onUnsubscribe(themeId: number) {
+    this.themeService.unSubscribe(themeId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.subscribedThemes$ = this.themeService.getSubscribedThemes()
+          this.cdr.markForCheck();
         }
       })
   }

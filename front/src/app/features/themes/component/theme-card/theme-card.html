@@ -7,13 +7,14 @@
 
   <div class="theme-actions">
     @if (mode() === 'profile') {
-      <button type="button" class="btn btn--primary">
+      <button type="button" class="btn btn--primary" (click)="themeClicked.emit(theme().id)">
         Se désabonner
       </button>
     } @else {
       <button
         type="button"
         class="btn"
+        (click)="themeClicked.emit(theme().id)"
         [class.btn--primary]="!theme().subscribed"
         [class.btn--disabled]="theme().subscribed"
         [disabled]="theme().subscribed">
