@@ -5,7 +5,6 @@ import com.openclassrooms.mddapi.article.dto.CreateArticleRequest;
 import com.openclassrooms.mddapi.article.entity.Article;
 import com.openclassrooms.mddapi.article.repository.ArticleRepository;
 import com.openclassrooms.mddapi.common.exception.ResourceNotFoundException;
-import com.openclassrooms.mddapi.subscription.entity.Subscription;
 import com.openclassrooms.mddapi.subscription.repository.SubscriptionRepository;
 import com.openclassrooms.mddapi.theme.entity.Theme;
 import com.openclassrooms.mddapi.theme.repository.ThemeRepository;
