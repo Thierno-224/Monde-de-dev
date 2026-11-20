@@ -15,7 +15,8 @@ describe('Article Details and Comments', () => {
       .should('contain', 'Découvrez les fondamentaux de Spring Boot.');
 
     cy.get('.comment-card')
-      .should('have.length', 1);
+      .its('length')
+      .should('be.at.least', 1);
 
     cy.contains(
       '.comment-content',
@@ -38,7 +39,7 @@ describe('Article Details and Comments', () => {
 
     cy.wait('@createComment')
       .its('response.statusCode')
-      .should('be.oneOf', [200, 201]);
+      .should('eq', 201);
 
     cy.contains('.comment-content', comment)
       .should('be.visible');

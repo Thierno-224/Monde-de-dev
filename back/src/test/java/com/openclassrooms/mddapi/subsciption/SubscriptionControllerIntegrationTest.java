@@ -7,6 +7,7 @@ import com.openclassrooms.mddapi.theme.entity.Theme;
 import com.openclassrooms.mddapi.theme.repository.ThemeRepository;
 import com.openclassrooms.mddapi.user.entity.User;
 import com.openclassrooms.mddapi.user.repository.UserRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +17,19 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Transactional
 class SubscriptionControllerIntegrationTest {
 
     @Autowired
@@ -49,20 +53,18 @@ class SubscriptionControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        subscriptionRepository.deleteAll();
-        themeRepository.deleteAll();
-        userRepository.deleteAll();
+        String uniqueId = UUID.randomUUID().toString();
 
         user = new User();
-        user.setUsername("subscriber");
-        user.setEmail("subscriber@example.com");
+        user.setUsername("subscriber_" + uniqueId);
+        user.setEmail("subscriber_" + uniqueId + "@example.com");
         user.setPassword("encoded-password");
-        user = userRepository.save(user);
+        user = userRepository.saveAndFlush(user);
 
         theme = new Theme();
-        theme.setTitle("Java");
+        theme.setTitle("Java_" + uniqueId);
         theme.setDescription("Développement Java");
-        theme = themeRepository.save(theme);
+        theme = themeRepository.saveAndFlush(theme);
 
         token = jwtService.generateToken(user.getId());
     }
@@ -124,7 +126,7 @@ class SubscriptionControllerIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].id").value(theme.getId()))
-                .andExpect(jsonPath("$[0].title").value("Java"))
+                .andExpect(jsonPath("$[0].title").value(theme.getTitle()))
                 .andExpect(jsonPath("$[0].subscribed").value(true));
     }
 
@@ -138,14 +140,15 @@ class SubscriptionControllerIntegrationTest {
 
     @Test
     void shouldReturnUnauthorizedWhenTokenIsMissing() throws Exception {
-        mockMvc.perform(post(
-                        "/api/themes/{themeId}/subscriptions", theme.getId()))
+        mockMvc.perform(
+                        post("/api/themes/{themeId}/subscriptions", theme.getId()))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     void shouldReturnUnauthorizedWhenGettingSubscriptionsWithoutToken()
             throws Exception {
+
         mockMvc.perform(get("/api/users/me/subscriptions"))
                 .andExpect(status().isUnauthorized());
     }
@@ -153,8 +156,9 @@ class SubscriptionControllerIntegrationTest {
     @Test
     void shouldReturnUnauthorizedWhenUnsubscribingWithoutToken()
             throws Exception {
-        mockMvc.perform(delete(
-                        "/api/themes/{themeId}/subscriptions", theme.getId()))
+
+        mockMvc.perform(
+                        delete("/api/themes/{themeId}/subscriptions", theme.getId()))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -162,7 +166,8 @@ class SubscriptionControllerIntegrationTest {
         Subscription subscription = new Subscription();
         subscription.setUser(user);
         subscription.setTheme(theme);
-        subscriptionRepository.save(subscription);
+
+        subscriptionRepository.saveAndFlush(subscription);
     }
 
     private MockHttpServletRequestBuilder authenticated(

@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -26,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Transactional
 class ThemeControllerIntegrationTest {
 
     @Autowired
@@ -49,9 +51,6 @@ class ThemeControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        subscriptionRepository.deleteAll();
-        themeRepository.deleteAll();
-        userRepository.deleteAll();
 
         user = createUser("user1", "user1@example.com");
         theme = createTheme("Java", "Développement Java");

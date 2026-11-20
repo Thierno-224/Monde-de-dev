@@ -20,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -30,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Transactional
 class CommentIntegrationTest {
 
     private static final String COMMENTS_URL = "/api/articles/{articleId}/comments";
@@ -65,11 +67,6 @@ class CommentIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        commentRepository.deleteAll();
-        articleRepository.deleteAll();
-        subscriptionRepository.deleteAll();
-        themeRepository.deleteAll();
-        userRepository.deleteAll();
 
         user = createUser();
         Theme theme = createTheme();

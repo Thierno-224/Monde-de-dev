@@ -34,7 +34,10 @@ export class ArticleCreate {
   });
 
   themes$: Observable<ThemeModel[]> = this.themeService.getAllThem();
+
   protected submitArticle() {
+    if (this.articleForm.invalid) return;
+
     this.articleService.createArticle(this.articleForm.getRawValue())
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({

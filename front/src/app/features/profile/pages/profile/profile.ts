@@ -1,11 +1,11 @@
-import {ChangeDetectorRef, Component, DestroyRef, inject, input, InputSignal} from '@angular/core';
+import {ChangeDetectorRef, Component, DestroyRef, inject} from '@angular/core';
 import {Header} from '../../../../shared/components/header/header';
 import {UserService} from '../../services/user-service';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {ThemeCard} from '../../../themes/component/theme-card/theme-card';
 import {ThemeModel} from '../../../themes/models/theme.model';
-import {map, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {ThemeService} from '../../../themes/services/theme.service';
 import {AsyncPipe} from '@angular/common';
 import {UpdateUserModel} from '../../models/user-model';
@@ -28,7 +28,6 @@ export class Profile {
   private themeService = inject(ThemeService);
   private cdr = inject(ChangeDetectorRef);
 
-  theme: InputSignal<ThemeModel> = input.required<ThemeModel>();
   subscribedThemes$: Observable<ThemeModel[]> = this.themeService.getSubscribedThemes()
 
   userForm = this.fb.nonNullable.group({
