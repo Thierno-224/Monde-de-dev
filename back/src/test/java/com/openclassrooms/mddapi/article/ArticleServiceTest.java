@@ -1,5 +1,6 @@
 package com.openclassrooms.mddapi.article;
 
+import com.openclassrooms.mddapi.article.dto.ArticleResponse;
 import com.openclassrooms.mddapi.article.dto.CreateArticleRequest;
 import com.openclassrooms.mddapi.article.entity.Article;
 import com.openclassrooms.mddapi.article.repository.ArticleRepository;
@@ -15,6 +16,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
@@ -82,16 +84,23 @@ class ArticleServiceTest {
     @Test
     void shouldReturnEmptyFeedWhenUserHasNoSubscriptions() {
         Long userId = 1L;
+        int page = 0;
+        int size = 10;
 
         when(subscriptionRepository.findByUserId(userId))
                 .thenReturn(List.of());
 
-        var result = articleService.getArticlesBySubscription(
-                userId,
-                Sort.Direction.DESC
-        );
+        Page<ArticleResponse> result =
+                articleService.getArticlesBySubscription(
+                        userId,
+                        page,
+                        size,
+                        Sort.Direction.DESC
+                );
 
         assertTrue(result.isEmpty());
+        assertEquals(0, result.getTotalElements());
+        assertEquals(0, result.getNumber());
 
         verifyNoInteractions(articleRepository);
     }

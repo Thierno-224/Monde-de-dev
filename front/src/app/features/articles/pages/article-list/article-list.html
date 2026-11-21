@@ -11,15 +11,30 @@
     </button>
   </div>
 
-  @if (articles$ | async; as articles) {
-    <section class="articles-grid">
-      @for (article of articles; track article.id) {
-        <app-article-card [article]="article"/>
-      } @empty {
-        <p>Aucun article disponible.</p>
-      }
-    </section>
-  } @else {
-    <p>Chargement des articles...</p>
+  <section class="articles-grid">
+    @for (article of articles(); track article.id) {
+      <app-article-card [article]="article"/>
+    }
+  </section>
+
+  @if (loading()) {
+    <p class="loading">Chargement des articles...</p>
+  }
+
+  @if (error()) {
+    <p>Impossible de charger les articles.</p>
+    <button type="button" (click)="loadArticles()">
+      Réessayer
+    </button>
+  }
+
+  @if (last() && articles().length === 0) {
+    <p>Aucun article disponible.</p>
+  }
+
+  <div #sentinel class="scroll-sentinel"></div>
+
+  @if (last() && articles().length > 0) {
+    <p class="end-message">Tous les articles ont été chargés.</p>
   }
 </main>

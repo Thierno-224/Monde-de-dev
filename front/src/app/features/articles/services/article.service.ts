@@ -1,8 +1,9 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {ArticleModel, CreateArticleModel} from '../models/article.model';
 import {environment} from '../../../../environments/environment';
+import {Page} from '../../../shared/models/page.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +12,20 @@ import {environment} from '../../../../environments/environment';
 export class ArticleService {
   private http = inject(HttpClient);
 
-  getMyFeed(sort: 'ASC' | 'DESC' = 'DESC'): Observable<ArticleModel[]> {
-    return this.http.get<ArticleModel[]>(
-      `${environment.apiBaseUrl}/articles/feed?sort=${sort}`
+  getFeed(
+    page: number = 0,
+    size: number = 10,
+    sort: 'ASC' | 'DESC' = 'DESC'
+  ): Observable<Page<ArticleModel>> {
+
+    const params = new HttpParams()
+      .set('page', page)
+      .set('size', size)
+      .set('sort', sort);
+
+    return this.http.get<Page<ArticleModel>>(
+      `${environment.apiBaseUrl}/articles/feed`,
+      { params }
     );
   }
 

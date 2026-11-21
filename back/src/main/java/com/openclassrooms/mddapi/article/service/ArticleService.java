@@ -11,6 +11,9 @@ import com.openclassrooms.mddapi.theme.repository.ThemeRepository;
 import com.openclassrooms.mddapi.user.entity.User;
 import com.openclassrooms.mddapi.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +55,12 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public List<ArticleResponse> getArticlesBySubscription(Long userId, Sort.Direction direction) {
+    public Page<ArticleResponse> getArticlesBySubscription(
+            Long userId,
+            int page,
+            int size,
+            Sort.Direction direction
+    ) {
         List<Long> themeIds = subscriptionRepository
                 .findByUserId(userId)
                 .stream()
@@ -60,14 +68,16 @@ public class ArticleService {
                 .toList();
 
         if (themeIds.isEmpty())
-            return List.of();
+            return Page.empty();
 
-        Sort sort = Sort.by(direction, "createdAt");
+        Pageable pageable = PageRequest.of(
+                page, size, Sort.by(direction, "createdAt")
+        );
+
         return articleRepository
-                .findByThemeIdIn(themeIds, sort)
-                .stream()
-                .map(this::mapToArticleResponse)
-                .toList();
+                .findByThemeIdIn(themeIds, pageable)
+                .map(this::mapToArticleResponse);
+
     }
 
     @Transactional(readOnly = true)
