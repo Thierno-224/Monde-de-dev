@@ -38,7 +38,7 @@ describe('ArticleList Integration Tests', () => {
 
   function expectFeedRequest(sort: 'ASC' | 'DESC'): TestRequest {
     const request = httpMock.expectOne(
-      `${feedUrl}?sort=${sort}`
+      `${feedUrl}?page=0&size=10&sort=${sort}`
     );
 
     expect(request.request.method).toBe('GET');
@@ -46,13 +46,27 @@ describe('ArticleList Integration Tests', () => {
     return request;
   }
 
+  function emptyPage() {
+    return {
+      content: [],
+      totalPages: 0,
+      totalElements: 0,
+      numberOfElements: 0,
+      number: 0,
+      size: 10,
+      first: true,
+      last: true,
+      empty: true
+    };
+  }
+
   it('should load articles with DESC sorting by default', async () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    const request = expectFeedRequest('DESC');
+    component.loadArticles();
 
-    request.flush([]);
+    expectFeedRequest('DESC').flush(emptyPage());
 
     fixture.detectChanges();
 
@@ -63,7 +77,9 @@ describe('ArticleList Integration Tests', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    expectFeedRequest('DESC').flush([]);
+    component.loadArticles();
+
+    expectFeedRequest('DESC').flush(emptyPage());
 
     fixture.detectChanges();
 
@@ -77,7 +93,9 @@ describe('ArticleList Integration Tests', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    expectFeedRequest('DESC').flush([]);
+    component.loadArticles();
+
+    expectFeedRequest('DESC').flush(emptyPage());
 
     fixture.detectChanges();
 
@@ -87,11 +105,10 @@ describe('ArticleList Integration Tests', () => {
     sortButton.click();
 
     fixture.detectChanges();
-    await fixture.whenStable();
 
     expect(component.sort()).toBe('ASC');
 
-    expectFeedRequest('ASC').flush([]);
+    expectFeedRequest('ASC').flush(emptyPage());
 
     fixture.detectChanges();
 

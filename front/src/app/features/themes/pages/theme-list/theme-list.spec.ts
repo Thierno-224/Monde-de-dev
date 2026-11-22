@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { ThemeList } from './theme-list';
+import {provideRouter} from '@angular/router';
 
 describe('ThemeList', () => {
   let component: ThemeList;
@@ -8,6 +11,11 @@ describe('ThemeList', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideRouter([])
+      ],
       imports: [ThemeList]
     })
     .compileComponents();

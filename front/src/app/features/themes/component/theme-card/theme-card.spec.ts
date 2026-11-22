@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ThemeCard } from './theme-card';
 
 describe('ThemeCard', () => {
@@ -9,11 +8,17 @@ describe('ThemeCard', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ThemeCard]
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ThemeCard);
     component = fixture.componentInstance;
+
+    fixture.componentRef.setInput('theme', {
+      id: 1,
+      title: 'Java',
+      description: 'Développement Java'
+    });
+
     fixture.detectChanges();
   });
 
